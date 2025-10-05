@@ -1,0 +1,16 @@
+{
+  "cache_stats": {
+    "cache_hits": 0,
+    "misses": 0,
+    "versions_hits": 0
+  },
+  "compression_stats": {
+    "avg_compression_ratio": 0,
+    "avg_lz4_time": 0,
+    "avg_zstd_time": 0
+  },
+  "created_at": "2025-10-02T15:18:29.9186304+09:00",
+  "total_commits": 0,
+  "total_files": 0,
+  "version": "2.0.0"
+}

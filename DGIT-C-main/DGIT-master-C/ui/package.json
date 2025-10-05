@@ -1,0 +1,230 @@
+{
+  "name": "dgit-mac",
+  "version": "1.0.0",
+  "description": "DGit CLI용 데스크탑 인터페이스",
+  "main": "main.js",
+  "author": {
+    "name": "3pxTeam",
+    "email": "contact@3pxteam.com",
+    "url": "https://github.com/3pxTeam"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/3pxTeam/DGIT-MAC.git"
+  },
+  "keywords": [
+    "dgit",
+    "version-control",
+    "design-files",
+    "macos",
+    "electron",
+    "gui",
+    "desktop-app"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron  --dev",
+    "build": "electron-builder",
+    "build-mac": "electron-builder --mac",
+    "build-win": "electron-builder --win",
+    "build-linux": "electron-builder --linux",
+    "pack": "electron-builder --dir",
+    "dist": "npm run build",
+    "postinstall": "electron-builder install-app-deps",
+    "test": "npm run lint",
+    "lint": "eslint *.js renderer/*.js",
+    "lint-fix": "eslint *.js renderer/*.js --fix",
+    "clean": "rimraf dist build",
+    "rebuild": "electron-rebuild"
+  },
+  "dependencies": {
+    "electron": "^28.0.0"
+  },
+  "devDependencies": {
+    "electron-builder": "^24.9.1",
+    "electron-rebuild": "^3.2.9",
+    "eslint": "^8.56.0",
+    "rimraf": "^5.0.5"
+  },
+  "build": {
+    "appId": "com.3pxteam.dgit-mac",
+    "productName": "DGit MAC",
+    "copyright": "Copyright © 2024 3pxTeam",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "dgit-integration.js",
+      "renderer/**/*",
+      "assets/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "assets/",
+        "to": "assets/",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.icns",
+      "entitlements": "assets/entitlements.mac.plist",
+      "entitlementsInherit": "assets/entitlements.mac.plist",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "darkModeSupport": true,
+      "type": "distribution"
+    },
+    "dmg": {
+      "title": "DGit MAC ${version}",
+      "icon": "assets/icon.icns",
+      "background": "assets/dmg-background.png",
+      "contents": [
+        {
+          "x": 130,
+          "y": 220,
+          "type": "file"
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "window": {
+        "width": 540,
+        "height": 380
+      }
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "icon": "assets/icon.ico",
+      "publisherName": "3pxTeam",
+      "verifyUpdateCodeSignature": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "DGit MAC",
+      "include": "assets/installer.nsh"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.png",
+      "category": "Development",
+      "description": "DGit CLI용 데스크탑 인터페이스",
+      "desktop": {
+        "Name": "DGit MAC",
+        "Comment": "Design files version control system",
+        "Categories": "Development;VersionControl;",
+        "Keywords": "dgit;version;control;design;files;"
+      }
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "3pxTeam",
+      "repo": "DGIT-MAC",
+      "private": false,
+      "releaseType": "release"
+    },
+    "afterSign": "scripts/notarize.js",
+    "compression": "maximum",
+    "removePackageScripts": true
+  },
+  "homepage": "https://github.com/3pxTeam/DGIT-MAC",
+  "bugs": {
+    "url": "https://github.com/3pxTeam/DGIT-MAC/issues"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/3pxTeam"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "name": "DGit MAC",
+        "executableName": "dgit-mac",
+        "asar": true,
+        "icon": "assets/icon"
+      }
+    }
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es6": true,
+      "node": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+      "ecmaVersion": 2021,
+      "sourceType": "module"
+    },
+    "rules": {
+      "no-console": "off",
+      "no-unused-vars": "warn",
+      "semi": ["error", "always"],
+      "quotes": ["error", "single"]
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "author": "DGit User",
+  "email": "user@dgit.local",
+  "created": "2025-10-02T15:18:29.8358017+09:00",
+  "version": "2.0.0",
+  "description": "DGit repository with simplified structure",
+  "compression": {
+    "lz4_stage": {
+      "enabled": true,
+      "max_file_size": 524288000,
+      "compression_level": 1,
+      "cache_retention": 24
+    },
+    "zstd_stage": {
+      "enabled": false,
+      "compression_level": 3,
+      "optimize_interval": 60,
+      "min_idle_time": 300,
+      "compression_ratio": 0.4
+    },
+    "archive_stage": {
+      "enabled": false,
+      "compression_level": 22,
+      "archive_after_days": 90,
+      "max_archive_size": 5368709120
+    },
+    "cache": {
+      "main_cache_size": 1024,
+      "backup_cache_size": 0,
+      "access_threshold": 1,
+      "eviction_policy": "LRU"
+    }
+  },
+  "performance": {
+    "enable_metrics": true,
+    "log_compression_time": true,
+    "log_cache_hits": false,
+    "stats_retention_days": 30
+  }
+}
