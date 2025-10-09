@@ -263,6 +263,43 @@ function selectCommitForRestore(version, hash, message) {
     `);
 }
 
+// 모든 파일 추가 (dgit add .)
+async function addAllFiles() {
+    if (!currentProject) {
+        showToast('프로젝트가 선택되지 않았습니다', 'warning');
+        return;
+    }
+
+    try {
+        showToast('모든 파일을 추가하는 중...', 'info');
+        
+        const result = await window.electron.dgit.add(currentProject.path);
+        
+        if (result.success) {
+            showToast('모든 파일이 스테이징 영역에 추가되었습니다', 'success');
+            
+            // 터미널에 로그 추가
+            const terminalLog = document.getElementById('terminalLog');
+            terminalLog.innerHTML += `
+                <div style="margin-bottom: 8px;">
+                    <span style="color: var(--accent-green);">✅</span>
+                    <span style="color: var(--text-secondary);">[${new Date().toLocaleTimeString()}]</span>
+                    <span style="margin-left: 8px;">모든 파일 추가 완료</span>
+                </div>
+            `;
+            terminalLog.scrollTop = terminalLog.scrollHeight;
+            
+            // 프로젝트 상태 새로고침
+            await loadProjectData();
+        } else {
+            showToast(`파일 추가 실패: ${result.error}`, 'error');
+        }
+    } catch (error) {
+        console.error('파일 추가 실패:', error);
+        showToast('파일 추가 중 오류가 발생했습니다', 'error');
+    }
+}
+
 // ⭐⭐ 수정: 버전으로 복원 실행
 async function performRestoreToVersion(version) {
     closeModal();

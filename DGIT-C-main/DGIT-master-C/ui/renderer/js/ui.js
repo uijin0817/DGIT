@@ -218,6 +218,12 @@ function confirmModal() {
  * @param {number} duration - 알림 유지 시간 (ms)
  */
 function showToast(message, type = 'info', duration = 2000) { 
+    //알림이 꺼져있으면 토스트도 표시하지 않음
+    if (window.notificationsEnabled === false){
+        console.log('[Toast] 알림이 비활성화되어 있어 토스트를 표시하지 않습니다.')
+        return; 
+    }
+    
     const container = document.getElementById('toastContainer');
     if (!container) {
         console.warn('Toast container not found.');

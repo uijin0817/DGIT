@@ -464,10 +464,13 @@ ipcMain.handle('show-notification', async (event, title, body) => {
         }
         
         // 알림이 비활성화되어 있으면 표시하지 않음
+        /*
         if (!notificationsEnabled) {
             console.log('[Notification] 알림이 비활성화되어 있어 표시하지 않습니다.');
             return { success: false, reason: 'notifications_disabled' };
         }
+        */
+
         
         // 알림 표시
         if (Notification.isSupported()) {

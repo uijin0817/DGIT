@@ -284,16 +284,21 @@ async function showRecentProjects() {
             else if (['sketch'].includes(ext)) iconSVG = '<svg width="24" height="24" viewBox="0 0 24 24"><polygon points="12,3 2,9 12,21 22,9" fill="#f7c800"/></svg>';
             else if (['xd'].includes(ext)) iconSVG = '<svg width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" rx="5" fill="#a259ff"/><text x="50%" y="60%" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">XD</text></svg>';
             else if (['png','jpg','jpeg','webp','bmp','gif'].includes(ext)) iconSVG = '<svg width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" rx="5" fill="#eee"/><circle cx="8" cy="8" r="3" fill="#0acf83"/><rect x="4" y="14" width="16" height="6" fill="#f7c800"/></svg>';
-            return `
-                <div class="file-item" onclick="openRecentProject('${project.path}', '${project.name}')" title="${tooltip}">
-                    <div class="file-thumbnail">${iconSVG}</div>
-                    <div class="file-info">
-                        <div class="file-name">${project.name}</div>
-                        <div class="file-details">${lastFolder} • ${formatDate(project.lastOpened)}</div>
-                    </div>
-                </div>
-            `;
-        }).join('');
+             // ⭐ 안전한 데이터 전달을 위해 data 속성 사용
+    return `
+    <div class="file-item" 
+         data-project-path="${project.path.replace(/"/g, '&quot;')}" 
+         data-project-name="${project.name.replace(/"/g, '&quot;')}"
+         onclick="openRecentProjectSafe(this)" 
+         title="${tooltip}">
+        <div class="file-thumbnail">${iconSVG}</div>
+        <div class="file-info">
+            <div class="file-name">${project.name}</div>
+            <div class="file-details">${lastFolder} • ${formatDate(project.lastOpened)}</div>
+        </div>
+    </div>
+`;
+}).join('');
         html += '</div>';
     });
 
@@ -305,6 +310,13 @@ async function showRecentProjects() {
             <button class="btn btn-secondary" onclick="closeModal()">닫기</button>
         </div>
     `);
+}
+
+// 안전한 최근 프로젝트 열기
+function openRecentProjectSafe(element) {
+    const path = element.getAttribute('data-project-path');
+    const name = element.getAttribute('data-project-name');
+    openRecentProject(path, name);
 }
 
 async function openRecentProject(path, name){

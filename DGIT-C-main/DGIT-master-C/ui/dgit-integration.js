@@ -220,7 +220,8 @@ class DGitIntegration {
             const spawnOptions = {
                 cwd: cwd || process.cwd(),
                 env: { ...process.env, ...options.env },
-                shell: process.platform === 'win32', // Windows에서 shell 옵션 활성화
+                shell : false, // ⭐ 한글 경로 지원을 위해 shell 비활성화
+                // shell: process.platform === 'win32', // Windows에서 shell 옵션 활성화
                 windowsHide: true, // Windows에서 콘솔 창 숨기기
                 ...options
             };
